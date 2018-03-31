@@ -12,10 +12,10 @@ const NoteSchema = new mongoose.Schema({
     type: String,
     required:true
   },
-  image: imageSchema,
-  user: {
-    type: mongoose.Schema.Types.ObjectId, ref: "User"
-  }
+  // image: imageSchema,
+  // user: {
+  //   type: mongoose.Schema.ObjectId, ref: "User"
+  // }
 });
 
 module.exports = mongoose.model('Note', NoteSchema);

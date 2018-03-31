@@ -5,7 +5,7 @@ const cors       = require('cors');
 const { pass, user } = require('./src/config.js');
 
 // MONGO MODELS
-const Note = require('./api/models')
+const Note = require('./api/models/note')
 
 const PORT = process.env.PORT || 5000;
 
@@ -73,16 +73,47 @@ server.post('/notes', (req, res) => {
   }
 })
 
+server.patch('/notes/:id', (req, res) => {
+  const id = req.params;
+  Note.findOneAndUpdate({_id: id}, req.body)
+  .then(note => {
+    Note.find({}).then(notes => {
+      if (notes.length) {
+        res.status(200).json(notes)
+      } else {
+        res.status(404).json({msg: "No notes found."})
+      }
+    }).catch(err => {
+      res.status(500).json({err})
+    })
+  }).catch(err => {
+    res.status(500).json({err})
+  })
+})
+
+// delete note
 server.delete('/notes/:id', (req, res) => {
   const id = req.params;
-  Note.find({_id: id})
+  Note.findOneAndRemove({_id: id})
   .then(note => {
-
+    Note.find({})
+    .then(notes => {
+      if (notes.length) {
+        res.status(200).json(notes)
+      } else {
+        res.status(404).json({ msg: 'No notes found.'})
+      }
+    })
+    .catch(err => {
+      res.status(500).json({err})
+    })
   })
   .catch(err => {
     res.status(500).json({err})
   })
 })
+
+
 
 
 

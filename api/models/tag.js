@@ -5,5 +5,7 @@ const TagSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  note: [mongoose.Schema.Types.ObjectId],
+  note: [mongoose.Schema.ObjectId],
 });
+
+module.exports = mongoose.model('Tag', TagSchema);
